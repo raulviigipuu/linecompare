@@ -1,0 +1,3 @@
+# linecompare
+
+Compare text lines
