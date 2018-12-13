@@ -1,0 +1,1 @@
+console.log('midagi toimub')
