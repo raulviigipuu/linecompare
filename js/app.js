@@ -12,8 +12,9 @@ function handleCompare() {
     let rightTextarea = document.getElementById("rightTextarea")
 
     let leftLines = leftTextarea.value.split("\n")
+    let rightLines = rightTextarea.value.split("\n")
     console.log("LEFT LINE COUNT: " + leftLines.length)
+    console.log("RIGHT LINE COUNT: " + rightLines.length)
 
-    console.log("LEFT: " + leftTextarea.value)
-    console.log("RIGHT: " + rightTextarea.value)
+    
 }
