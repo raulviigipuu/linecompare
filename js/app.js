@@ -135,9 +135,10 @@ function deleteDOMContent(parent) {
 function addRow(tableId, line) {
     const table = document.querySelector(tableId)
     const row = document.createElement('tr')
+    row.classList.add('d-flex')
     row.innerHTML = `
-        <td>${line.text}</td>
-        <td>${line.count}</td>
+        <td class="col-sm-10">${line.text}</td>
+        <td class="col-sm-2 text-center">${line.count}</td>
     `
     table.appendChild(row)
 }
@@ -145,10 +146,11 @@ function addRow(tableId, line) {
 function addCommonRow(tableId, line) {
     const table = document.querySelector(tableId)
     const row = document.createElement('tr')
+    row.classList.add('d-flex')
     row.innerHTML = `
-        <td>${line.text}</td>
-        <td>${line.leftCount}</td>
-        <td>${line.count}</td>
+        <td class="col-sm-8">${line.text}</td>
+        <td class="col-sm-2 text-center">${line.leftCount}</td>
+        <td class="col-sm-2 text-center">${line.count}</td>
     `
     table.appendChild(row)
 }
