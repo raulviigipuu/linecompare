@@ -70,7 +70,14 @@ function handleCompare() {
         }
         // No match, add to left lines table
         else {
-            addRow(LEFT_LINES_TABLE_ID, leftLines[i])
+            if(countMatches(onlyLeft, leftLines[i]) > 0) {
+                continue
+            }
+            onlyLeft.push(leftLines[i])
+            addRow(LEFT_LINES_TABLE_ID, {
+                text: leftLines[i],
+                count: countMatches(leftLines, leftLines[i])
+            })
         }
 
         console.log("Element found " + count + " times.")
@@ -90,7 +97,14 @@ function handleCompare() {
         }
         // No match, add to right lines table
         else {
-            addRow(RIGHT_LINES_TABLE_ID, rightLines[i])
+            if(countMatches(onlyRight, rightLines[i])) {
+                continue
+            }
+            onlyRight.push(rightLines[i])
+            addRow(RIGHT_LINES_TABLE_ID, {
+                text: rightLines[i],
+                count: countMatches(rightLines, rightLines[i])
+            })
         }
     }
 
@@ -122,7 +136,8 @@ function addRow(tableId, line) {
     const table = document.querySelector(tableId)
     const row = document.createElement('tr')
     row.innerHTML = `
-        <td>${line}</td>
+        <td>${line.text}</td>
+        <td>${line.count}</td>
     `
     table.appendChild(row)
 }
