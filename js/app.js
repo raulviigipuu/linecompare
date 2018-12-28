@@ -4,6 +4,14 @@ const COMMON_LINES_TABLE_ID = '#commonLinesList'
 const RIGHT_LINES_TABLE_ID = '#rightLinesList'
 const LEFT_LINES_TABLE_ID = '#leftLinesList'
 
+let data = {
+    lines: {
+        common: [],
+        left: [],
+        right: []
+    }
+}
+
 let commonLines = []
 let onlyLeft = []
 let onlyRight = []
@@ -38,6 +46,11 @@ function handleCompare() {
     let count = 0
 
     for (let i = 0; i < leftLines.length; i++) {
+
+        if(countMatches(commonLines, leftLines[i]) > 0) {
+            continue
+        }
+
         count = 0
         for (let j = 0; j < rightLines.length; j++) {
 
@@ -48,9 +61,11 @@ function handleCompare() {
         // Match found!
         if (count != 0) {
             commonLines.push(leftLines[i])
+            let leftCount = countMatches(leftLines, leftLines[i])
             addCommonRow(COMMON_LINES_TABLE_ID, {
                 text: leftLines[i],
-                count: count
+                count: count,
+                leftCount: leftCount
             })
         }
         // No match, add to left lines table
@@ -70,7 +85,7 @@ function handleCompare() {
             }
         }
         // Match found
-        if(count != 0) {
+        if (count != 0) {
             // should update count
         }
         // No match, add to right lines table
@@ -83,6 +98,17 @@ function handleCompare() {
     commonLines.forEach((line) => {
         console.log(line)
     })
+}
+
+function countMatches(arr, elem) {
+
+    let count = 0
+    for (let i = 0; i < arr.length; i++) {
+        if (arr[i] === elem) {
+            count++
+        }
+    }
+    return count
 }
 
 function deleteDOMContent(parent) {
@@ -106,7 +132,7 @@ function addCommonRow(tableId, line) {
     const row = document.createElement('tr')
     row.innerHTML = `
         <td>${line.text}</td>
-        <td>-</td>
+        <td>${line.leftCount}</td>
         <td>${line.count}</td>
     `
     table.appendChild(row)
