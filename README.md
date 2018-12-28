@@ -6,3 +6,4 @@ Compare text lines
 
 - Mis ridadel kordused on(lingid?)
 - Koodi korrastamine
+- Osalised kordused
