@@ -43,11 +43,6 @@ function handleCompare() {
     let leftLines = leftTextarea.value.split("\n").filter((line) => line.trim().length > 0).map(line => line.trim())
     let rightLines = rightTextarea.value.split("\n").filter((line) => line.trim().length > 0).map(line => line.trim())
 
-    console.log("LEFT LINES: ")
-    leftLines.forEach(line => console.log(line))
-    console.log("RIGHT LINES: ")
-    rightLines.forEach(line => console.log(line))
-
     let count = 0
 
     for (let i = 0; i < leftLines.length; i++) {
