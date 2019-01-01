@@ -110,6 +110,7 @@ function handleClear() {
 
     leftTextarea.value = ''
     rightTextarea.value = ''
+    clearResults()
 }
 
 function clearResults() {
