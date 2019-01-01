@@ -4,6 +4,14 @@ const COMMON_LINES_TABLE_ID = '#commonLinesList'
 const RIGHT_LINES_TABLE_ID = '#rightLinesList'
 const LEFT_LINES_TABLE_ID = '#leftLinesList'
 
+let data = {
+    lines: {
+        common: [],
+        left: [],
+        right: []
+    }
+}
+
 let commonLines = []
 let onlyLeft = []
 let onlyRight = []
@@ -38,6 +46,11 @@ function handleCompare() {
     let count = 0
 
     for (let i = 0; i < leftLines.length; i++) {
+
+        if(countMatches(commonLines, leftLines[i]) > 0) {
+            continue
+        }
+
         count = 0
         for (let j = 0; j < rightLines.length; j++) {
 
@@ -48,14 +61,23 @@ function handleCompare() {
         // Match found!
         if (count != 0) {
             commonLines.push(leftLines[i])
+            let leftCount = countMatches(leftLines, leftLines[i])
             addCommonRow(COMMON_LINES_TABLE_ID, {
                 text: leftLines[i],
-                count: count
+                count: count,
+                leftCount: leftCount
             })
         }
         // No match, add to left lines table
         else {
-            addRow(LEFT_LINES_TABLE_ID, leftLines[i])
+            if(countMatches(onlyLeft, leftLines[i]) > 0) {
+                continue
+            }
+            onlyLeft.push(leftLines[i])
+            addRow(LEFT_LINES_TABLE_ID, {
+                text: leftLines[i],
+                count: countMatches(leftLines, leftLines[i])
+            })
         }
 
         console.log("Element found " + count + " times.")
@@ -70,12 +92,19 @@ function handleCompare() {
             }
         }
         // Match found
-        if(count != 0) {
+        if (count != 0) {
             // should update count
         }
         // No match, add to right lines table
         else {
-            addRow(RIGHT_LINES_TABLE_ID, rightLines[i])
+            if(countMatches(onlyRight, rightLines[i])) {
+                continue
+            }
+            onlyRight.push(rightLines[i])
+            addRow(RIGHT_LINES_TABLE_ID, {
+                text: rightLines[i],
+                count: countMatches(rightLines, rightLines[i])
+            })
         }
     }
 
@@ -83,6 +112,17 @@ function handleCompare() {
     commonLines.forEach((line) => {
         console.log(line)
     })
+}
+
+function countMatches(arr, elem) {
+
+    let count = 0
+    for (let i = 0; i < arr.length; i++) {
+        if (arr[i] === elem) {
+            count++
+        }
+    }
+    return count
 }
 
 function deleteDOMContent(parent) {
@@ -95,8 +135,10 @@ function deleteDOMContent(parent) {
 function addRow(tableId, line) {
     const table = document.querySelector(tableId)
     const row = document.createElement('tr')
+    row.classList.add('d-flex')
     row.innerHTML = `
-        <td>${line}</td>
+        <td class="col-sm-10">${line.text}</td>
+        <td class="col-sm-2 text-center">${line.count}</td>
     `
     table.appendChild(row)
 }
@@ -104,10 +146,11 @@ function addRow(tableId, line) {
 function addCommonRow(tableId, line) {
     const table = document.querySelector(tableId)
     const row = document.createElement('tr')
+    row.classList.add('d-flex')
     row.innerHTML = `
-        <td>${line.text}</td>
-        <td>-</td>
-        <td>${line.count}</td>
+        <td class="col-sm-8">${line.text}</td>
+        <td class="col-sm-2 text-center">${line.leftCount}</td>
+        <td class="col-sm-2 text-center">${line.count}</td>
     `
     table.appendChild(row)
 }

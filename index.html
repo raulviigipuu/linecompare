@@ -16,37 +16,42 @@
 </head>
 
 <body>
-  <h1 class="text-center">Teksti võrdlus</h1>
-  <form id="compForm">
-    <div class="container">
-      <div class="row">
-        <div id="left" class="col">
-          <div class="form-group">
-            <label for="leftTextarea">Vasak</label>
-            <textarea class="form-control" id="leftTextarea" rows="5"></textarea>
-          </div>
-        </div>
-        <div id="right" class="col">
-          <div class="form-group">
-            <label for="rightTextarea">Parem</label>
-            <textarea class="form-control" id="rightTextarea" rows="5"></textarea>
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        <button id="compareButton" type="button" class="btn btn-primary">Võrdle</button>
-        <button id="clearButton" type="button" class="btn btn-secondary">Puhasta</button>
-      </div>
-    </div>
-  </form>
+  <div class="container-fluid">
+    <h1 class="text-center">Teksti võrdlus</h1>
 
-  <div class="container">
+    <form id="compForm">
+      <div class="container-fluid">
+        <div class="row">
+          <div id="left" class="col">
+            <div class="form-group">
+              <label for="leftTextarea" class="font-weight-bold">Vasak</label>
+              <textarea class="form-control" id="leftTextarea" rows="15"></textarea>
+            </div>
+          </div>
+          <div id="right" class="col">
+            <div class="form-group">
+              <label for="rightTextarea" class="font-weight-bold">Parem</label>
+              <textarea class="form-control" id="rightTextarea" rows="15"></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="row pb-3">
+          <div class="col text-center">
+            <button id="compareButton" type="button" class="btn btn-primary">Võrdle</button>
+            <button id="clearButton" type="button" class="btn btn-secondary">Puhasta</button>
+          </div>
+        </div>
+      </div>
+  </div>
+  </form>
+  <div class="container-fluid">
     <div class="row">
       <div id="left" class="col">
-        <table class="table table-hover table-sm">
+        <table class="table table-hover table-striped table-sm">
           <thead class="thead-dark">
-            <tr>
-              <th scope="col">Ainult vasakul</th>
+            <tr class="d-flex">
+              <th scope="col" class="col-sm-10">Ainult vasakul</th>
+              <th scope="col" class="col-sm-2 text-center">Kordusi</th>
             </tr>
           </thead>
           <tbody id="leftLinesList">
@@ -54,10 +59,11 @@
         </table>
       </div>
       <div class="col">
-        <table class="table table-hover table-sm">
+        <table class="table table-hover table-striped table-sm">
           <thead class="thead-dark">
-            <tr>
-              <th scope="col">Ainult paremal</th>
+            <tr class="d-flex">
+              <th scope="col" class="col-sm-10">Ainult paremal</th>
+              <th scope="col" class="col-sm-2 text-center">Kordusi</th>
             </tr>
           </thead>
           <tbody id="rightLinesList">
@@ -65,18 +71,23 @@
         </table>
       </div>
     </div>
+    <div class="row">
+      <div class="col">
+        <table id="commonLinesTable" class="table table-hover table-striped table-sm">
+          <thead class="thead-light">
+            <tr class="d-flex">
+              <th scope="col" class="col-sm-8">Ühised read</th>
+              <th scope="col" class="col-sm-2 text-center">Kordusi vasakul</th>
+              <th scope="col" class="col-sm-2 text-center">Kordusi paremal</th>
+            </tr>
+          </thead>
+          <tbody id="commonLinesList">
+          </tbody>
+        </table>
+      </div>
+    </div>
   </div>
-  <table id="commonLinesTable" class="table table-hover table-sm">
-    <thead class="thead-light">
-      <tr>
-        <th scope="col">Ühised read</th>
-        <th scope="col">Kordusi vasakul</th>
-        <th scope="col">Kordusi paremal</th>
-      </tr>
-    </thead>
-    <tbody id="commonLinesList">
-    </tbody>
-  </table>
+  </div>
 
   <!-- Optional JavaScript -->
   <!-- jQuery first, then Popper.js, then Bootstrap JS -->
