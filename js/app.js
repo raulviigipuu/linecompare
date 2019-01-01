@@ -1,9 +1,19 @@
 'use strict';
 
 const COMMON_LINES_TABLE_ID = '#commonLinesList'
-const RIGHT_LINES_TABLE_ID = '#rightLinesList'
 const LEFT_LINES_TABLE_ID = '#leftLinesList'
+const RIGHT_LINES_TABLE_ID = '#rightLinesList'
 
+let compareButton = null
+let clearButton = null
+let leftTextarea = null
+let rightTextarea = null
+
+let commonLines = []
+let onlyLeft = []
+let onlyRight = []
+
+// draft
 let data = {
     lines: {
         common: [],
@@ -12,32 +22,25 @@ let data = {
     }
 }
 
-let commonLines = []
-let onlyLeft = []
-let onlyRight = []
-
 // DOM loaded
 document.addEventListener("DOMContentLoaded", function (event) {
-    console.log("DOM ready")
-    let compareButton = document.getElementById("compareButton")
-    compareButton.addEventListener("click", handleCompare)
-})
 
-// TODO:
-// Osaliselt kattuvad read
-// Mitu korda esinevad read
+    console.log("DOM ready")
+
+    // Elements
+    compareButton = document.getElementById("compareButton")
+    clearButton = document.getElementById("clearButton")
+    leftTextarea = document.getElementById("leftTextarea")
+    rightTextarea = document.getElementById("rightTextarea")
+
+    // Events
+    compareButton.addEventListener("click", handleCompare)
+    clearButton.addEventListener("click", handleClear)
+})
 
 function handleCompare() {
 
-    deleteDOMContent(COMMON_LINES_TABLE_ID)
-    deleteDOMContent(RIGHT_LINES_TABLE_ID)
-    deleteDOMContent(LEFT_LINES_TABLE_ID)
-    commonLines = []
-    onlyLeft = []
-    onlyRight = []
-
-    let leftTextarea = document.getElementById("leftTextarea")
-    let rightTextarea = document.getElementById("rightTextarea")
+    clearResults()
 
     // Get the value and ignore empty lines
     let leftLines = leftTextarea.value.split("\n").filter((line) => line.trim().length > 0).map(line => line.trim())
@@ -105,6 +108,22 @@ function handleCompare() {
             })
         }
     }
+}
+
+function handleClear() {
+
+    leftTextarea.value = ''
+    rightTextarea.value = ''
+}
+
+function clearResults() {
+
+    deleteDOMContent(COMMON_LINES_TABLE_ID)
+    deleteDOMContent(RIGHT_LINES_TABLE_ID)
+    deleteDOMContent(LEFT_LINES_TABLE_ID)
+    commonLines = []
+    onlyLeft = []
+    onlyRight = []
 }
 
 function countMatches(arr, elem) {
