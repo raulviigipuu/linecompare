@@ -8,6 +8,7 @@ let compareButton = null
 let clearButton = null
 let leftTextarea = null
 let rightTextarea = null
+let slashCheckbox = null
 
 let commonLines = []
 let onlyLeft = []
@@ -32,6 +33,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
     clearButton = document.getElementById("clearButton")
     leftTextarea = document.getElementById("leftTextarea")
     rightTextarea = document.getElementById("rightTextarea")
+    slashCheckbox = document.getElementById("replaceSlashes")
 
     // Events
     compareButton.addEventListener("click", handleCompare)
@@ -45,6 +47,10 @@ function handleCompare() {
     // Get the values and ignore empty lines
     let leftLines = leftTextarea.value.split("\n").filter((line) => line.trim().length > 0).map(line => line.trim())
     let rightLines = rightTextarea.value.split("\n").filter((line) => line.trim().length > 0).map(line => line.trim())
+
+    if(slashCheckbox.checked) {
+        rightLines = rightLines.map(line => line.replace(/\\/g, "/"))
+    }
 
     let count = 0
 
