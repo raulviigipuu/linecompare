@@ -4,11 +4,12 @@ const COMMON_LINES_TABLE_ID = '#commonLinesList'
 const LEFT_LINES_TABLE_ID = '#leftLinesList'
 const RIGHT_LINES_TABLE_ID = '#rightLinesList'
 
-let compareButton = null
-let clearButton = null
-let leftTextarea = null
-let rightTextarea = null
-let slashCheckbox = null
+let compareB = null
+let clearB = null
+let leftTA = null
+let rightTA = null
+let leftSlashReplaceCB = null
+let rightSlashReplaceCB = null
 
 let commonLines = []
 let onlyLeft = []
@@ -29,26 +30,30 @@ document.addEventListener("DOMContentLoaded", function (event) {
     console.log("DOM ready")
 
     // Elements
-    compareButton = document.getElementById("compareButton")
-    clearButton = document.getElementById("clearButton")
-    leftTextarea = document.getElementById("leftTextarea")
-    rightTextarea = document.getElementById("rightTextarea")
-    slashCheckbox = document.getElementById("replaceSlashes")
+    compareB = document.getElementById("compareButton")
+    clearB = document.getElementById("clearButton")
+    leftTA = document.getElementById("leftTextarea")
+    rightTA = document.getElementById("rightTextarea")
+    leftSlashReplaceCB = document.getElementById("leftReplaceBackslashes")
+    rightSlashReplaceCB = document.getElementById("rightReplaceBackslashes")
 
     // Events
-    compareButton.addEventListener("click", handleCompare)
-    clearButton.addEventListener("click", handleClear)
+    compareB.addEventListener("click", handleCompare)
+    clearB.addEventListener("click", handleClear)
 })
 
 function handleCompare() {
 
     clearResults() // Clear previous results
 
-    // Get the values and ignore empty lines
-    let leftLines = leftTextarea.value.split("\n").filter((line) => line.trim().length > 0).map(line => line.trim())
-    let rightLines = rightTextarea.value.split("\n").filter((line) => line.trim().length > 0).map(line => line.trim())
+    // Get the trimmed values and ignore empty lines
+    let leftLines = leftTA.value.split("\n").filter((line) => line.trim().length > 0).map(line => line.trim())
+    let rightLines = rightTA.value.split("\n").filter((line) => line.trim().length > 0).map(line => line.trim())
 
-    if(slashCheckbox.checked) {
+    if(leftSlashReplaceCB.checked) {
+        leftLines = leftLines.map(line => line.replace(/\\/g, "/"))
+    }
+    if(rightSlashReplaceCB.checked) {
         rightLines = rightLines.map(line => line.replace(/\\/g, "/"))
     }
 
@@ -90,6 +95,7 @@ function handleCompare() {
         }
     }
 
+    // Check the right lines
     for (let i = 0; i < rightLines.length; i++) {
         count = 0
         for (let j = 0; j < leftLines.length; j++) {
@@ -114,8 +120,8 @@ function handleCompare() {
 
 function handleClear() {
 
-    leftTextarea.value = ''
-    rightTextarea.value = ''
+    leftTA.value = ''
+    rightTA.value = ''
     clearResults()
 }
 
