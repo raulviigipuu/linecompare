@@ -18,7 +18,7 @@
 <body>
   <div class="container-fluid">
     <h1 class="text-center">Teksti võrdlus</h1>
-    <h2 class="text-center">v1.0.3</h2>
+    <h2 class="text-center">v1.0.4</h2>
 
     <form id="compForm">
       <div class="container-fluid">
@@ -51,13 +51,14 @@
         <div class="row pb-3">
           <div class="col text-center">
             <button id="compareButton" type="button" class="btn btn-primary">Võrdle</button>
+            <!--<button id="containsButton" type="button" class="btn btn-primary">Otsi sisalduvusi</button>-->
             <button id="clearButton" type="button" class="btn btn-secondary">Puhasta</button>
           </div>
         </div>
       </div>
   </div>
   </form>
-  <div class="container-fluid">
+  <div class="container-fluid d-none" id="comparisonResult">
     <div class="row">
       <div id="left" class="col">
         <table class="table table-hover table-striped table-sm">

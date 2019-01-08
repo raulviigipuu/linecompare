@@ -5,6 +5,7 @@ const LEFT_LINES_TABLE_ID = '#leftLinesList'
 const RIGHT_LINES_TABLE_ID = '#rightLinesList'
 
 let compareB = null
+//let containsB = null
 let clearB = null
 let leftTA = null
 let rightTA = null
@@ -31,6 +32,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
     // Elements
     compareB = document.getElementById("compareButton")
+    //containsB = document.getElementById("containsButton")
     clearB = document.getElementById("clearButton")
     leftTA = document.getElementById("leftTextarea")
     rightTA = document.getElementById("rightTextarea")
@@ -39,12 +41,14 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
     // Events
     compareB.addEventListener("click", handleCompare)
+    //containsB.addEventListener("click", handleContains)
     clearB.addEventListener("click", handleClear)
 })
 
 function handleCompare() {
 
-    clearResults() // Clear previous results
+    showComparisonResults() // Make result table visible
+    clearComparisonResults() // Clear previous results
 
     // Get the trimmed values and ignore empty lines
     let leftLines = leftTA.value.split("\n").filter((line) => line.trim().length > 0).map(line => line.trim())
@@ -118,14 +122,30 @@ function handleCompare() {
     }
 }
 
+function handleContains() {
+
+    
+}
+
 function handleClear() {
 
     leftTA.value = ''
     rightTA.value = ''
-    clearResults()
+    clearComparisonResults()
 }
 
-function clearResults() {
+function showComparisonResults() {
+
+    const comparisonResultElem = document.getElementById('comparisonResult')
+    comparisonResultElem.classList.remove('d-none')
+}
+
+function hideComparisonResults() {
+
+
+}
+
+function clearComparisonResults() {
 
     deleteDOMContent(COMMON_LINES_TABLE_ID)
     deleteDOMContent(RIGHT_LINES_TABLE_ID)
