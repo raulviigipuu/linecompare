@@ -51,13 +51,34 @@
         <div class="row pb-3">
           <div class="col text-center">
             <button id="compareButton" type="button" class="btn btn-primary">Võrdle</button>
-            <!--<button id="containsButton" type="button" class="btn btn-primary">Otsi sisalduvusi</button>-->
+            <button id="containsButton" type="button" class="btn btn-primary">Otsi sisalduvusi</button>
             <button id="clearButton" type="button" class="btn btn-secondary">Puhasta</button>
           </div>
         </div>
       </div>
   </div>
   </form>
+
+  <!-- containing results -->
+  <div class="container-fluid d-none" id="containsResult">
+    <div class="row">
+      <div class="col">
+        <table id="commonLinesTable" class="table table-hover table-striped table-sm">
+          <thead class="thead-dark">
+            <tr class="d-flex">
+              <th scope="col" class="col-sm-4">Otsitav sõna</th>
+              <th scope="col" class="col-sm-2 text-center">Leiti</th>
+              <th scope="col" class="col-sm-6 text-center">Read</th>
+            </tr>
+          </thead>
+          <tbody id="containsLinesList">
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- comparison results -->
   <div class="container-fluid d-none" id="comparisonResult">
     <div class="row">
       <div id="left" class="col">
