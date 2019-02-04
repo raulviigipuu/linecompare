@@ -1,11 +1,18 @@
 'use strict';
 
 const ID = {
-    commonLinesTable: 'commonLinesList',
-    leftLinesTable: 'leftLinesList',
-    rightLinesTable: 'rightLinesList',
-    containsResults: 'containsResult',
-    comparisonResults: 'comparisonResult'
+    comparison: {
+        resultsTable: 'comparisonResult',
+        results: {
+            common: 'commonLinesList',
+            left: 'leftLinesList',
+            right: 'rightLinesList'
+        }
+    },
+    contains: {
+        resultsTable: 'containsResult',
+        results: 'containsLinesList'
+    }
 }
 
 let compareB = null
@@ -51,18 +58,18 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
 function handleCompare() {
 
-    hide(ID.containsResults)
-    show(ID.comparisonResults) // Make result table visible
+    hide(ID.contains.resultsTable)
+    show(ID.comparison.resultsTable) // Make result table visible
     clearComparisonResults() // Clear previous results
 
     // Get the trimmed values and ignore empty lines
     let leftLines = leftTA.value.split("\n").filter((line) => line.trim().length > 0).map(line => line.trim())
     let rightLines = rightTA.value.split("\n").filter((line) => line.trim().length > 0).map(line => line.trim())
 
-    if(leftSlashReplaceCB.checked) {
+    if (leftSlashReplaceCB.checked) {
         leftLines = leftLines.map(line => line.replace(/\\/g, "/"))
     }
-    if(rightSlashReplaceCB.checked) {
+    if (rightSlashReplaceCB.checked) {
         rightLines = rightLines.map(line => line.replace(/\\/g, "/"))
     }
 
@@ -70,7 +77,7 @@ function handleCompare() {
 
     for (let i = 0; i < leftLines.length; i++) {
 
-        if(countMatches(commonLines, leftLines[i]) > 0) {
+        if (countMatches(commonLines, leftLines[i]) > 0) {
             continue
         }
 
@@ -85,7 +92,7 @@ function handleCompare() {
         if (count != 0) {
             commonLines.push(leftLines[i])
             let originCount = countMatches(leftLines, leftLines[i])
-            addCommonRow(ID.commonLinesTable, {
+            addCommonRow(ID.comparison.results.common, {
                 text: leftLines[i],
                 originCount: originCount,
                 matchCount: count
@@ -93,11 +100,11 @@ function handleCompare() {
         }
         // No match, add to left lines table
         else {
-            if(countMatches(onlyLeft, leftLines[i]) > 0) {
+            if (countMatches(onlyLeft, leftLines[i]) > 0) {
                 continue
             }
             onlyLeft.push(leftLines[i])
-            addRow(ID.leftLinesTable, {
+            addRow(ID.comparison.results.left, {
                 text: leftLines[i],
                 count: countMatches(leftLines, leftLines[i])
             })
@@ -115,11 +122,11 @@ function handleCompare() {
         }
         // Match found
         if (count == 0) {
-            if(countMatches(onlyRight, rightLines[i])) {
+            if (countMatches(onlyRight, rightLines[i])) {
                 continue
             }
             onlyRight.push(rightLines[i])
-            addRow(ID.rightLinesTable, {
+            addRow(ID.comparison.results.right, {
                 text: rightLines[i],
                 count: countMatches(rightLines, rightLines[i])
             })
@@ -129,22 +136,62 @@ function handleCompare() {
 
 function handleContains() {
 
-    hide(ID.comparisonResults)
-    show(ID.containsResults)
+    hide(ID.comparison.resultsTable)
+    show(ID.contains.resultsTable)
+    deleteDOMContent(ID.contains.results)
 
     let searchTerms = leftTA.value.split("\n").filter((line) => line.trim().length > 0).map(line => line.trim())
     let lines = rightTA.value.split("\n").filter((line) => line.trim().length > 0).map(line => line.trim())
-    for(let i = 0; i < searchTerms.length; i++) {
+    for (let i = 0; i < searchTerms.length; i++) {
 
         let searchTerm = searchTerms[i]
-        let termCount = search(searchTerm, lines)
+        let results = search(searchTerm, lines)
 
-        addContainsRow(ID.containsResults, {
+        addContainsRow(ID.contains.results, {
             nr: i + 1,
             text: searchTerms[i],
-            count: termCount
+            count: results.count,
+            lines: results.lines
         })
     }
+}
+
+function search(term, linesArr) {
+
+    let count = 0;
+    let lines = []
+    // Counts how many lines has term string in them
+    for(let i = 0; i < linesArr.length; i++) {
+        
+        if(linesArr[i].indexOf(term) != -1) {
+            count++;
+            lines.push({
+                lineNr: i + 1,
+                lineText: highlightTerms(term, linesArr[i])
+            })
+        }
+    }
+
+    return { count: count, lines: lines}
+}
+
+function highlightTerms(term, line) {
+
+    // <label class='font-weight-bold'>
+    let result = ""
+    let arr = line.split(term)
+
+    for(let i = 0; i < arr.length; i++) {
+
+        // Check if not last element
+        if(i != arr.length - 1) {
+            result += arr[i] + '<label class="font-weight-bold">' + term + '</label>'
+        } else {
+            result += arr[i]
+        }
+    }
+
+    return result
 }
 
 function handleCompClear() {
@@ -152,7 +199,7 @@ function handleCompClear() {
     leftTA.value = ''
     rightTA.value = ''
     clearComparisonResults()
-    hide(ID.comparisonResults)
+    hide(ID.comparison.resultsTable)
 }
 
 function handleContainsClear() {
@@ -160,7 +207,7 @@ function handleContainsClear() {
     leftTA.value = ''
     rightTA.value = ''
     clearContainsResults()
-    hide(ID.containsResults)
+    hide(ID.contains.resultsTable)
 }
 
 function show(elemId) {
@@ -178,9 +225,9 @@ function clearContainsResults() {
 
 function clearComparisonResults() {
 
-    deleteDOMContent(ID.commonLinesTable)
-    deleteDOMContent(ID.rightLinesTable)
-    deleteDOMContent(ID.leftLinesTable)
+    deleteDOMContent(ID.comparison.results.common)
+    deleteDOMContent(ID.comparison.results.left)
+    deleteDOMContent(ID.comparison.results.right)
     commonLines = []
     onlyLeft = []
     onlyRight = []
@@ -209,11 +256,27 @@ function addContainsRow(tableId, line) {
     const row = document.createElement('tr')
     row.classList.add('d-flex')
     row.innerHTML = `
-        <td class="col-sm-4">${line.nr}. ${line.text}</td>
-        <td class="col-sm-2"></td>
-        <td class="col-sm-6"></td>
+        <th scope="row">${line.nr}.</th>
+        <td class="col-sm-3">${line.text}</td>
+        <td class="col-sm-1">${line.count}</td>
+        <td class="col-sm-8">${addContainsRowLines(line.lines)}</td>
     `
     table.appendChild(row)
+}
+// lines array contains objects with properties lineNr and lineText
+function addContainsRowLines(lines) {
+
+    let htmlStr = ""
+    for(let i = 0; i < lines.length; i++) {
+        if(htmlStr.length > 0) {
+            htmlStr += "<br>"
+        }
+        htmlStr += `${lines[i].lineNr}. `
+        htmlStr += `${lines[i].lineText}`
+    }
+    htmlStr += '</span>'
+
+    return htmlStr
 }
 
 function addRow(tableId, line) {
