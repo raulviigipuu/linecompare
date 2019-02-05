@@ -15,6 +15,32 @@ const ID = {
     }
 }
 
+let DATA = {
+    comparison: {
+        results: {
+            common: [],
+            left: [],
+            right: []
+        }
+    }
+}
+
+let ELEM = {
+    button: {
+        compare: null,
+        contains: null,
+        clear: null
+    },
+    textarea: {
+        left: null,
+        right: null
+    },
+    checkbox: {
+        leftSlashReplace: null,
+        rightSlashReplace: null
+    }
+}
+
 let compareB = null
 let containsB = null
 let clearB = null
@@ -23,18 +49,7 @@ let rightTA = null
 let leftSlashReplaceCB = null
 let rightSlashReplaceCB = null
 
-let commonLines = []
-let onlyLeft = []
-let onlyRight = []
 
-// draft
-let data = {
-    lines: {
-        common: [],
-        left: [],
-        right: []
-    }
-}
 
 // DOM loaded
 document.addEventListener("DOMContentLoaded", function (event) {
@@ -77,7 +92,7 @@ function handleCompare() {
 
     for (let i = 0; i < leftLines.length; i++) {
 
-        if (countMatches(commonLines, leftLines[i]) > 0) {
+        if (countMatches(DATA.comparison.results.common, leftLines[i]) > 0) {
             continue
         }
 
@@ -90,7 +105,7 @@ function handleCompare() {
         }
         // Match found!
         if (count != 0) {
-            commonLines.push(leftLines[i])
+            DATA.comparison.results.common.push(leftLines[i])
             let originCount = countMatches(leftLines, leftLines[i])
             addCommonRow(ID.comparison.results.common, {
                 text: leftLines[i],
@@ -100,10 +115,10 @@ function handleCompare() {
         }
         // No match, add to left lines table
         else {
-            if (countMatches(onlyLeft, leftLines[i]) > 0) {
+            if (countMatches(DATA.comparison.results.left, leftLines[i]) > 0) {
                 continue
             }
-            onlyLeft.push(leftLines[i])
+            DATA.comparison.results.left.push(leftLines[i])
             addRow(ID.comparison.results.left, {
                 text: leftLines[i],
                 count: countMatches(leftLines, leftLines[i])
@@ -122,10 +137,10 @@ function handleCompare() {
         }
         // Match found
         if (count == 0) {
-            if (countMatches(onlyRight, rightLines[i])) {
+            if (countMatches(DATA.comparison.results.right, rightLines[i])) {
                 continue
             }
-            onlyRight.push(rightLines[i])
+            DATA.comparison.results.right.push(rightLines[i])
             addRow(ID.comparison.results.right, {
                 text: rightLines[i],
                 count: countMatches(rightLines, rightLines[i])
@@ -228,9 +243,9 @@ function clearComparisonResults() {
     deleteDOMContent(ID.comparison.results.common)
     deleteDOMContent(ID.comparison.results.left)
     deleteDOMContent(ID.comparison.results.right)
-    commonLines = []
-    onlyLeft = []
-    onlyRight = []
+    DATA.comparison.results.common = []
+    DATA.comparison.results.left = []
+    DATA.comparison.results.right = []
 }
 
 function countMatches(arr, elem) {
