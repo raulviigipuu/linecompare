@@ -100,6 +100,7 @@ class Handler {
                 }
                 DATA.comparison.results.left.push(leftLines[i])
                 addRow(ID.comparison.results.left, {
+                    nr: i + 1,
                     text: leftLines[i],
                     count: countMatches(leftLines, leftLines[i])
                 })
@@ -122,6 +123,7 @@ class Handler {
                 }
                 DATA.comparison.results.right.push(rightLines[i])
                 addRow(ID.comparison.results.right, {
+                    nr: i + 1,
                     text: rightLines[i],
                     count: countMatches(rightLines, rightLines[i])
                 })
@@ -323,6 +325,7 @@ function addRow(tableId, line) {
     const row = document.createElement('tr')
     row.classList.add('d-flex')
     row.innerHTML = `
+        <th scope="row">${line.nr}.</th>
         <td class="col-sm-10">${line.text}</td>
         <td class="col-sm-2 text-center">${line.count}</td>
     `
